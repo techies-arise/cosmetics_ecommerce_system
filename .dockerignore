@@ -1,0 +1,21 @@
+# Keep the build context small and avoid copying local state or secrets.
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+
+# Python environments, bytecode, and test/tool caches.
+.venv
+venv
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Common local/generated assets.
+node_modules/
+media/
+staticfiles/
+*.log

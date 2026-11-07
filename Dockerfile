@@ -1,18 +1,25 @@
+# syntax=docker/dockerfile:1.7
 FROM python:3.11-slim
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 
-# Install system dependencies for MySQL client and building wheels
-RUN apt-get update && apt-get install -y \
-    default-libmysqlclient-dev \
-    build-essential \
-    pkg-config \
-    && rm -rf /var/lib/apt/lists/*
+# Install only the runtime libraries needed for Pillow image handling
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+    apt-get update && apt-get install -y --no-install-recommends \
+    libjpeg62-turbo \
+    zlib1g
 
 WORKDIR /app
 
-COPY requirements.txt /app/
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt ./
 
-COPY . /app/
+# This will run almost instantly now because there's nothing to compile!
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install -r requirements.txt
+
+COPY . .
+
+EXPOSE 8000
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
