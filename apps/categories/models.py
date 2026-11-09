@@ -2,23 +2,21 @@ from django.db import models
 import uuid
 from django.utils.text import slugify
 
-class Category(models.Model):
-    # primary key as UUID
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
+class Categories(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # Core fields
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True, db_index=True)
     description = models.TextField(blank=True, null=True)
-
-    # Optional parent category fornested hierarchies
+    # Optional parent category for nested hierarchies
     # EX: Makeup -> Face Makeup
     parent = models.ForeignKey(
-        'self', 
-        on_delete=models.SET_NULL, 
-        blank=True, 
-        null=True, 
-        related_name='subcategories'
+        "self",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="subcategories",
     )
 
     # Timestamps
@@ -26,13 +24,14 @@ class Category(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        db_table = 'categories'
+        app_label = "categories"
+        db_table = "categories"
         verbose_name = "Category"
         verbose_name_plural = "Categories"
-        ordering = ['name']
+        ordering = ["name"]
 
     def __str__(self):
-            return self.name
+        return self.name
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -45,5 +44,3 @@ class Category(models.Model):
                 counter += 1
             self.slug = slug
         super().save(*args, **kwargs)
-
-    
