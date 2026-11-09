@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
 import os
+import sys
 from pathlib import Path
 import environ
 import pymysql
@@ -25,6 +26,9 @@ env = environ.Env(
 
 # Read .env file from project root
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
+# Inject 'apps' directory into sys.path
+sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 
 
 # Quick-start development settings - unsuitable for production
@@ -42,12 +46,22 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # Django default apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Custom ecommerce domain apps
+    'users',
+    'categories',
+    'products',
+    'product_variants',
+    'product_images',
+    'inventory',
+    'inventory_transactions',
 ]
 
 MIDDLEWARE = [
