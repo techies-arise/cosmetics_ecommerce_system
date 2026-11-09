@@ -22,6 +22,11 @@ For daily development, you do not need to rebuild the image. Simply run:
 ```bash
 docker compose up
 ```
+Container logs
+```bash
+docker compose logs -f web
+```
+
 * **Live Code Updates:** Your local directory is mounted live into the container. Any changes you make to your Python/Django files will trigger an **instant reload** without needing a container restart.
 * **Accessing the App:** Open your browser and go to [http://localhost:8000](http://localhost:8000).
 
@@ -35,6 +40,21 @@ docker compose build
 To safely shut down the running containers, press `Ctrl + C` in your terminal, or run:
 ```bash
 docker compose down
+```
+
+#### 5.Creating SuperUser
+```bash
+docker compose exec web python manage.py createsuperuser --settings=config.settings.development
+```
+
+#### 6.Making migrations -eg products
+Make migration
+```bash
+docker compose exec web python manage.py makemigrations products --settings=config.settings.development
+```
+Migrate
+```bash
+docker compose exec web python manage.py migrate --settings=config.settings.development
 ```
 
 ---

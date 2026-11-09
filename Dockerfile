@@ -4,12 +4,14 @@ FROM python:3.11-slim
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 
-# Install only the runtime libraries needed for Pillow image handling
+# Install runtime for Pillow image handling and runtime openssl and ca-certificates for cryptography wheels
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
     apt-get update && apt-get install -y --no-install-recommends \
     libjpeg62-turbo \
-    zlib1g
+    zlib1g \
+    openssl \
+    ca-certificates
 
 WORKDIR /app
 

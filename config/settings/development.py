@@ -12,6 +12,24 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 
 DEBUG = True
 
+# The Docker-created log file may be owned by root on the host. In development,
+# use the console handler only so local commands don't fail on file permissions.
+LOGGING = {
+    **LOGGING,
+    'handlers': {
+        name: handler
+        for name, handler in LOGGING['handlers'].items()
+        if name != 'file'
+    },
+    'loggers': {
+        **LOGGING['loggers'],
+        'django': {
+            **LOGGING['loggers']['django'],
+            'handlers': ['console'],
+        },
+    },
+}
+
 ALLOWED_HOSTS = ['*']
 
 # Database routing for Docker MySQL service
@@ -31,4 +49,8 @@ DATABASES = {
 }
 
 # To print emails to the console instead of sending them to real users
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+MAILERS = {
+    'default': {
+        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
+    },
+}
