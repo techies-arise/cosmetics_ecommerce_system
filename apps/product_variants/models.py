@@ -2,6 +2,7 @@ from django.db import models
 import uuid
 from apps.products.models import models
 from django.core.validators import MinValueValidator
+from apps.products.models import Product
 
 
 # product_variants
@@ -11,7 +12,7 @@ class ProductVariant(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # Foreign key back to the parent product
     product = models.ForeignKey(
-        "products.Products", on_delete=models.CASCADE, related_name="variants"
+        "products.Product", on_delete=models.CASCADE, related_name="variants"
     )
     # Clean, searchable unique identifier for every sellable stock keeping unit
     sku = models.CharField("SKU", max_length=50, unique=True, db_index=True)

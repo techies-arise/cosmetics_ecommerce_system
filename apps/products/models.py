@@ -1,13 +1,13 @@
 from django.db import models
 import uuid
 from django.utils.text import slugify
-from apps.categories.models import models
+from apps.categories.models import Category
 
 # products
 #  id, category_id, name, slug, description, brand, status, timestamps.
 
 
-class Products(models.Model):
+class Product(models.Model):
     class Status(models.TextChoices):
         DRAFT = "DRAFT", "Draft"
         ACTIVE = "ACTIVE", "Active"
@@ -16,7 +16,7 @@ class Products(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # Category Rel
     category = models.ForeignKey(
-        "categories.Categories", 
+        "categories.Category", 
         on_delete=models.PROTECT, 
         related_name="products", 
         db_index=True

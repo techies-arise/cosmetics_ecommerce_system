@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Products
+from .models import Product
 
-@admin.register(Products)
+@admin.register(Product)
 class ProductsAdmin(admin.ModelAdmin):
     list_display=('name', 'brand', 'category', 'status', 'created_at')
     list_filter = ('status', 'brand', 'category', 'created_at')

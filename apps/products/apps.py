@@ -5,3 +5,5 @@ class ProductsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'apps.products'
     verbose_name = 'Products Catalogue'
+    verbose_name_plural='Products Catalogues'
+    label='products'
