@@ -18,7 +18,7 @@ class InventoryTransaction(models.Model):
         default=uuid.uuid4,
         editable=False
         )
-    product_variant = models.OneToOneField(
+    product_variant = models.ForeignKey(
         'product_variants.ProductVariant',
         on_delete=models.PROTECT,
         related_name='inventory_transaction'
@@ -32,10 +32,11 @@ class InventoryTransaction(models.Model):
         default=TransactionType.SALE,
         db_index=True
         )
-    reference_id = models.CharField(
+    reference = models.CharField(
         max_length=255,
         blank=True,
-        null=True
+        null=True,
+        help_text="Order ID, PO number, or audit reason."
         )
     reason = models.CharField(
         max_length=255,

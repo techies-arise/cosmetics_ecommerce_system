@@ -16,6 +16,9 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_active", True)
+        # force superuser to be assigned the admin role automatically
+        extra_fields.setdefault("role", self.model.Role.ADMIN)
 
         if extra_fields.get("is_staff") is not True:
             raise ValueError("Superuser must have is_staff=True.")
@@ -36,7 +39,6 @@ class User(AbstractUser, PermissionsMixin):
     last_name = models.CharField(max_length=30)
     email = models.EmailField(unique=True, db_index=True)
     phone = models.CharField(max_length=15, blank=True, null=True)
-
     # Role management
     role = models.CharField(
         max_length=10, choices=Role.choices, default=Role.CUSTOMER, db_index=True

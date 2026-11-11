@@ -39,7 +39,7 @@ class Category(models.Model):
             slug = base_slug
             counter = 1
             # ensure the slug is unique
-            while Category.objects.filters(slug=slug).exclude(pk=self.pk).exists():
+            while Category.objects.filter(slug=slug).exclude(pk=self.pk).exists():
                 slug = f"{base_slug}-{counter}"
                 counter += 1
             self.slug = slug

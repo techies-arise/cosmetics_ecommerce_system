@@ -10,10 +10,10 @@ class Inventory(models.Model):
         default=uuid.uuid4,
         db_index=True
     )
-    product_variant = models.ForeignKey(
+    product_variant = models.OneToOneField(
         'product_variants.ProductVariant',
         on_delete=models.CASCADE,
-        related_name='variant'
+        related_name='inventory'
     )
     # core fields
     quantity_on_hand = models.PositiveIntegerField(default=0)
@@ -28,7 +28,7 @@ class Inventory(models.Model):
         verbose_name='Inventory'
         verbose_name_plural='Inventories'
     def __str__(self):
-        return f"{self.product_variant} — Available: {self.available_quantity}"
+        return f"{self.product_inventory} — Available: {self.available_quantity}"
 
     @property
     def available_quantity(self):

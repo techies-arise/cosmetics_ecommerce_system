@@ -16,17 +16,17 @@ class Product(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # Category Rel
     category = models.ForeignKey(
-        "categories.Category", 
-        on_delete=models.PROTECT, 
-        related_name="products", 
-        db_index=True
+        "categories.Category",
+        on_delete=models.PROTECT,
+        related_name="products",
+        db_index=True,
     )
     # core fields
     name = models.CharField(
         max_length=255,
         db_index=True,
     )
-    slug = models.CharField(max_length=300, unique=True, db_index=True)
+    slug = models.CharField(max_length=255, unique=True, db_index=True)
     description = models.TextField(blank=True, null=True)
     brand = models.CharField(max_length=150, db_index=True)
     status = models.CharField(
@@ -53,7 +53,7 @@ class Product(models.Model):
             slug = base_slug
             counter = 1
             # just incase it already exists
-            while Product.object.filter(slug=slug).exclude(pk=self.pk).exists():
+            while Product.objects.filter(slug=slug).exclude(pk=self.pk).exists():
                 slug = f"{base_slug}-{counter}"
                 counter += 1
             self.slug = slug
